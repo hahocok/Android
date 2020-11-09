@@ -5,19 +5,19 @@ public final class MainPresenter {
     private static final Object syncObj = new Object();
 
     // Это наш счетчик
-    private int temperature;
+    private String temperature;
 
     // Конструктор (вызывать извне его нельзя, поэтому он приватный)
     private MainPresenter(){
-        temperature = 0;
+        temperature = "0";
     }
 
     // Увеличение счетчика
-    public void setTemperature(int value){
+    public void setTemperature(String value){
         temperature = value;
     }
 
-    public int getTemperature(){
+    public String getTemperature(){
         return temperature;
     }
 
