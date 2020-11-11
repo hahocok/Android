@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Погода</string>
-    <string name="City">Город</string>
-    <string name="Temperature">Температура</string>
-    <string name="Cloudiness">Облачность</string>
-    <string name="Humidity">Влажность</string>
+    <string name="city">Город</string>
+    <string name="temperature">Температура</string>
+    <string name="cloudiness">Облачность</string>
+    <string name="humidity">Влажность</string>
 </resources>

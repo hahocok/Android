@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
-    <string name="City">City</string>
-    <string name="Temperature">Temperature</string>
-    <string name="Cloudiness">Cloudiness</string>
-    <string name="Humidity">Humidity</string>
+    <string name="city">City</string>
+    <string name="temperature">Temperature</string>
+    <string name="cloudiness">Cloudiness</string>
+    <string name="humidity">Humidity</string>
 </resources>
