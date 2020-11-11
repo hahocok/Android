@@ -1,15 +1,12 @@
 package com.android.android;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements Constants {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

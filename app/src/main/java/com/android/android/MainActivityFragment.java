@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.android.cards.SocSource;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivityFragment extends Fragment implements Constants {
 
@@ -20,8 +25,6 @@ public class MainActivityFragment extends Fragment implements Constants {
     private View mainHumidityContainer;
     private TextView mainTemperature;
     private TextView mainCity;
-    private TextView mainCloudiness;
-    private TextView mainHumidity;
 
     @Nullable
     @Override
@@ -34,8 +37,6 @@ public class MainActivityFragment extends Fragment implements Constants {
         mainHumidityContainer = view.findViewById(R.id.main_humidity_container);
         mainTemperature = view.findViewById(R.id.main_temperature);
         mainCity = view.findViewById(R.id.main_city);
-        mainCloudiness = view.findViewById(R.id.main_cloudiness);
-        mainHumidity = view.findViewById(R.id.main_humidity);
 
         mainCityContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,9 +61,36 @@ public class MainActivityFragment extends Fragment implements Constants {
 
         mainTemperature.setText(presenter.getTemperature());
 
+        SocSource sourceData = new SocSource(getResources());
+        initRecyclerView(view, sourceData.build());
+
+
         readIntent();
         return view;
     }
+
+    private void initRecyclerView(View view, SocSource data){
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+
+        // Эта установка служит для повышения производительности системы
+        recyclerView.setHasFixedSize(true);
+
+        // Будем работать со встроенным менеджером
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // Установим адаптер
+        SocnetAdapter adapter = new SocnetAdapter(data);
+        recyclerView.setAdapter(adapter);
+
+        // Добавим разделитель карточек
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(),  LinearLayoutManager.HORIZONTAL);
+        itemDecoration.setDrawable(getActivity().getDrawable(R.drawable.separator));
+        recyclerView.addItemDecoration(itemDecoration);
+
+    }
+
 
     private boolean isVisible(View view) {
         int isVisible = view.getVisibility();

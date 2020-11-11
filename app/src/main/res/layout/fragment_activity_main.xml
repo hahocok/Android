@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_gravity="center_horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/main_city_container"
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
+        android:paddingTop="0dp"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true"
@@ -40,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="20dp" />
 
         <TextView
             android:id="@+id/main_temperature"
@@ -48,6 +50,15 @@
             android:layout_height="wrap_content"
             android:text="0"/>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding"
+        android:id="@+id/recycler_view">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/main_cloudiness_container"
@@ -64,7 +75,7 @@
             android:layout_height="wrap_content"
             android:text="@string/cloudiness"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,6 +93,6 @@
             android:layout_height="wrap_content"
             android:text="@string/humidity"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 </LinearLayout>
