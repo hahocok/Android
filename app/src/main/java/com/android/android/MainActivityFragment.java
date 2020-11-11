@@ -1,6 +1,7 @@
 package com.android.android;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +11,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.android.cards.SocSource;
+import com.android.android.model.WeatherRequest;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.stream.Collectors;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +33,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivityFragment extends Fragment implements Constants {
 
+    private static final String TAG = "WEATHER";
+    private static final String WEATHER_URL_START = "https://api.openweathermap.org/data/2.5/weather?q=";
+    private static final String WEATHER_URL_END = ",RU&appid=";
+    private static final String WEATHER_API_KEY = "68c65e3c4c42de33f8a67466a1719a08";
+
     private MainPresenter presenter;
+
     private View mainCityContainer;
-    private View mainCloudinessContainer;
     private View mainHumidityContainer;
-    private TextView mainTemperature;
+
     private TextView mainCity;
+    private TextView mainTemperature;
+    private TextView mainPressure;
+    private TextView mainHumidity;
+    private TextView mainWindSpeed;
 
     @Nullable
     @Override
@@ -33,11 +55,8 @@ public class MainActivityFragment extends Fragment implements Constants {
         View view = inflater.inflate(R.layout.fragment_activity_main, container, false);
 
         presenter = MainPresenter.getInstance();
-        mainCityContainer = view.findViewById(R.id.main_city_container);
-        mainCloudinessContainer = view.findViewById(R.id.main_cloudiness_container);
-        mainHumidityContainer = view.findViewById(R.id.main_humidity_container);
-        mainTemperature = view.findViewById(R.id.main_temperature);
-        mainCity = view.findViewById(R.id.main_city);
+
+        initViews(view);
 
         mainCityContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +65,6 @@ public class MainActivityFragment extends Fragment implements Constants {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(CITY, mainCity.getText().toString());
-                bundle.putBoolean(CLOUDINESS, isVisible(mainCloudinessContainer));
                 bundle.putBoolean(HUMIDITY, isVisible(mainHumidityContainer));
 
                 selectCityFragment.setArguments(bundle);
@@ -68,6 +86,80 @@ public class MainActivityFragment extends Fragment implements Constants {
 
         readIntent();
         return view;
+    }
+
+    private void initViews(View view) {
+        mainCityContainer = view.findViewById(R.id.main_city_container);
+        mainHumidityContainer = view.findViewById(R.id.main_humidity_container);
+
+        mainCity = view.findViewById(R.id.main_city);
+        mainTemperature = view.findViewById(R.id.main_temperature);
+        mainPressure = view.findViewById(R.id.main_pressure);
+        mainHumidity = view.findViewById(R.id.main_humidity);
+        mainWindSpeed = view.findViewById(R.id.main_wind_speed);
+    }
+
+    private void getWeather() {
+        try {
+
+            String city;
+            if (getArguments() != null) {
+                city = getArguments().getString(CITY);
+            } else {
+                city = "";
+            }
+            String sb = WEATHER_URL_START +
+                    city +
+                    WEATHER_URL_END;
+            final URL uri = new URL(sb + WEATHER_API_KEY);
+            final Handler handler = new Handler(); // Запоминаем основной поток
+            new Thread(new Runnable() {
+                public void run() {
+                    HttpsURLConnection urlConnection = null;
+                    try {
+                        urlConnection = (HttpsURLConnection) uri.openConnection();
+                        urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
+                        urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
+                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
+                        String result = getLines(in);
+                        // преобразование данных запроса в модель
+                        Gson gson = new Gson();
+                        final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
+                        // Возвращаемся к основному потоку
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayWeather(weatherRequest);
+                            }
+                        });
+                    } catch (FileNotFoundException e) {
+                        Snackbar.make(getView(), "Такого города нет", Snackbar.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.e(TAG, "Fail connection", e);
+                        e.printStackTrace();
+                    } finally {
+                        if (null != urlConnection) {
+                            urlConnection.disconnect();
+                        }
+                    }
+                }
+            }).start();
+        } catch (MalformedURLException e) {
+            Log.e(TAG, "Fail URI", e);
+            e.printStackTrace();
+        }
+    }
+
+    private String getLines(BufferedReader in) {
+        return in.lines().collect(Collectors.joining("\n"));
+    }
+
+    private void displayWeather(WeatherRequest weatherRequest){
+        mainCity.setText(weatherRequest.getName());
+        mainTemperature.setText(String.format("%f2", weatherRequest.getMain().getTemp()));
+        mainPressure.setText(String.format("%d", weatherRequest.getMain().getPressure()));
+        mainHumidity.setText(String.format("%d", weatherRequest.getMain().getHumidity()));
+        mainWindSpeed.setText(String.format("%d", weatherRequest.getWind().getSpeed()));
     }
 
     private void initRecyclerView(View view, SocSource data){
@@ -121,19 +213,12 @@ public class MainActivityFragment extends Fragment implements Constants {
 
             mainTemperature.setText(presenter.getTemperature());
 
-            if (isCloudiness) {
-                mainCloudinessContainer.setVisibility(View.VISIBLE);
-            } else {
-                mainCloudinessContainer.setVisibility(View.GONE);
-            }
-
             if (isHumidity) {
                 mainHumidityContainer.setVisibility(View.VISIBLE);
             } else {
                 mainHumidityContainer.setVisibility(View.GONE);
             }
         } else {
-            mainCloudinessContainer.setVisibility(View.VISIBLE);
             mainHumidityContainer.setVisibility(View.VISIBLE);
         }
 
@@ -144,6 +229,7 @@ public class MainActivityFragment extends Fragment implements Constants {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         readIntent();
+        getWeather();
     }
 
     @Override

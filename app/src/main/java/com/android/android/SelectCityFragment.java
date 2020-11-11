@@ -2,7 +2,6 @@ package com.android.android;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ public class SelectCityFragment extends Fragment implements Constants {
 
     private Button btnSelectCity;
     private EditText etSelectCity;
-    private CheckBox cbCloudiness;
     private CheckBox cbHumidity;
     private MainPresenter presenter;
 
@@ -49,7 +47,6 @@ public class SelectCityFragment extends Fragment implements Constants {
             @Override
             public void onClick(View v) {
                 String city = etSelectCity.getText().toString();
-                boolean isCloudiness = cbCloudiness.isChecked();
                 boolean isHumidity = cbHumidity.isChecked();
 
                 presenter.setTemperature(getRandomTemp());
@@ -57,7 +54,6 @@ public class SelectCityFragment extends Fragment implements Constants {
                 final MainActivityFragment fragment = new MainActivityFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(CITY, city);
-                bundle.putBoolean(CLOUDINESS, isCloudiness);
                 bundle.putBoolean(HUMIDITY, isHumidity);
                 fragment.setArguments(bundle);
 
@@ -71,11 +67,6 @@ public class SelectCityFragment extends Fragment implements Constants {
                                 .commit();
                     }
                 }).show();
-
-//                getFragmentManager().
-//                        beginTransaction()
-//                        .replace(R.id.fragment_container, fragment)
-//                        .commit();
             }
         });
 
@@ -100,7 +91,6 @@ public class SelectCityFragment extends Fragment implements Constants {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(CITY, etSelectCity.getText().toString());
-        outState.putBoolean(CLOUDINESS, cbCloudiness.isChecked());
         outState.putBoolean(HUMIDITY, cbHumidity.isChecked());
         super.onSaveInstanceState(outState);
     }
@@ -108,7 +98,6 @@ public class SelectCityFragment extends Fragment implements Constants {
     private void initViews(View view) {
         presenter = MainPresenter.getInstance();
         btnSelectCity = view.findViewById(R.id.btn_select_city);
-        cbCloudiness = view.findViewById(R.id.cb_cloudiness);
         cbHumidity = view.findViewById(R.id.cb_humidity);
         etSelectCity = view.findViewById(R.id.et_select_city);
     }
@@ -116,11 +105,9 @@ public class SelectCityFragment extends Fragment implements Constants {
     private void readIntent() {
         Bundle args = getArguments();
         String city = null;
-        boolean isCloudiness = false;
         boolean isHumidity = false;
         if (args != null) {
             city = args.getString(CITY);
-            isCloudiness = args.getBoolean(CLOUDINESS, false);
             isHumidity = args.getBoolean(HUMIDITY, false);
         }
 
@@ -130,7 +117,6 @@ public class SelectCityFragment extends Fragment implements Constants {
             etSelectCity.setText(city);
         }
 
-        cbCloudiness.setChecked(isCloudiness);
         cbHumidity.setChecked(isHumidity);
     }
 }

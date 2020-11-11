@@ -4,7 +4,9 @@
     <string name="city_hint">Choose city</string>
     <string name="temperature">Temperature</string>
     <string name="cloudiness">Cloudiness</string>
+    <string name="pressure">Pressure</string>
     <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind speed</string>
     <string name="OK">OK</string>
     <string name="enter_city">Enter the name of the city</string>
     <string name="settings">Settings</string>

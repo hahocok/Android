@@ -11,8 +11,18 @@ android {
         versionCode 1
         versionName "1.0"
 
+//        buildConfigField("String", "WEATHER_API_KEY", "68c65e3c4c42de33f8a67466a1719a08".toString())
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+//    buildTypes.each {
+////        Properties properties = new Properties()
+////        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+////        def weatherApiKey  = properties.getProperty("weather_api_key", "68c65e3c4c42de33f8a67466a1719a08")
+//        it.buildConfigField("String", "WEATHER_API_KEY", "68c65e3c4c42de33f8a67466a1719a08")
+//    }
+
+
 
     buildTypes {
         release {
@@ -29,6 +39,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

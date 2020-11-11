@@ -16,16 +16,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/enter_city"
             android:singleLine="true"
+            android:inputType="textCapWords"
             />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <CheckBox
-        android:id="@+id/cb_cloudiness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cloudiness"
-        android:checked="true"
-        />
 
     <CheckBox
         android:id="@+id/cb_humidity"

@@ -5,7 +5,9 @@
     <string name="city_hint">Выберите город</string>
     <string name="temperature">Температура</string>
     <string name="cloudiness">Облачность</string>
+    <string name="pressure">Давление</string>
     <string name="humidity">Влажность</string>
+    <string name="wind_speed">Скорость ветра</string>
     <string name="OK">OK</string>
     <string name="enter_city">Введите название города</string>
     <string name="settings">Настройки</string>
