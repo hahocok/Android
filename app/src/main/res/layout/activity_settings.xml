@@ -6,7 +6,7 @@
 
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch1"
+        android:id="@+id/switchTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/settings_style" />
@@ -15,5 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/settings_language"
+        android:visibility="gone"
         />
 </LinearLayout>

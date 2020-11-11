@@ -1,14 +1,18 @@
 package com.android.android;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Random;
 
@@ -36,7 +40,7 @@ public class SelectCityFragment extends Fragment implements Constants {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initViews(view);
@@ -50,20 +54,37 @@ public class SelectCityFragment extends Fragment implements Constants {
 
                 presenter.setTemperature(getRandomTemp());
 
-                MainActivityFragment fragment = new MainActivityFragment();
+                final MainActivityFragment fragment = new MainActivityFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString(CITY, city);
                 bundle.putBoolean(CLOUDINESS, isCloudiness);
                 bundle.putBoolean(HUMIDITY, isHumidity);
                 fragment.setArguments(bundle);
-                getFragmentManager().
-                        beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .commit();
+
+                Snackbar.make(v, "Применить изменения?", Snackbar.LENGTH_LONG).setAction("ОК", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hideKeyboard(getContext(), view);
+                        getFragmentManager().
+                                beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                    }
+                }).show();
+
+//                getFragmentManager().
+//                        beginTransaction()
+//                        .replace(R.id.fragment_container, fragment)
+//                        .commit();
             }
         });
 
         readIntent();
+    }
+
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private String getRandomTemp() {

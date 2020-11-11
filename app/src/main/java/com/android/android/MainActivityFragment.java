@@ -2,6 +2,7 @@ package com.android.android;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,6 +116,7 @@ public class MainActivityFragment extends Fragment implements Constants {
                 mainCity.setHint(getResources().getString(R.string.enter_city));
             } else {
                 mainCity.setText(city);
+                mainCity.setGravity(Gravity.CENTER_HORIZONTAL);
             }
 
             mainTemperature.setText(presenter.getTemperature());
