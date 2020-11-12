@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.android.cards.SocSource;
+import com.android.android.cards.CardSource;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +61,7 @@ public class MainActivityFragment extends Fragment implements Constants {
 
         mainTemperature.setText(presenter.getTemperature());
 
-        SocSource sourceData = new SocSource(getResources());
+        CardSource sourceData = new CardSource(getResources());
         initRecyclerView(view, sourceData.build());
 
 
@@ -69,7 +69,7 @@ public class MainActivityFragment extends Fragment implements Constants {
         return view;
     }
 
-    private void initRecyclerView(View view, SocSource data){
+    private void initRecyclerView(View view, CardSource data){
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
 
         // Эта установка служит для повышения производительности системы
@@ -81,7 +81,7 @@ public class MainActivityFragment extends Fragment implements Constants {
         recyclerView.setLayoutManager(layoutManager);
 
         // Установим адаптер
-        SocnetAdapter adapter = new SocnetAdapter(data);
+        CardsAdapter adapter = new CardsAdapter(data);
         recyclerView.setAdapter(adapter);
 
         // Добавим разделитель карточек

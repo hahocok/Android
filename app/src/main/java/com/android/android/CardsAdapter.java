@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.android.cards.Soc;
-import com.android.android.cards.SocSource;
+import com.android.android.cards.Card;
+import com.android.android.cards.CardSource;
 
-public class SocnetAdapter extends RecyclerView.Adapter<SocnetAdapter.ViewHolder> {
-    private SocSource dataSource;
+public class CardsAdapter extends RecyclerView.Adapter<CardsAdapter.ViewHolder> {
+    private CardSource dataSource;
 
     // Передаем в конструктор источник данных
     // В нашем случае это массив, но может быть и запросом к БД
-    public SocnetAdapter(SocSource dataSource){
+    public CardsAdapter(CardSource dataSource){
         this.dataSource = dataSource;
     }
 
@@ -24,7 +24,7 @@ public class SocnetAdapter extends RecyclerView.Adapter<SocnetAdapter.ViewHolder
     // Запускается менеджером
     @NonNull
     @Override
-    public SocnetAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public CardsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         // Создаем новый элемент пользовательского интерфейса
         // Через Inflater
         View v = LayoutInflater.from(viewGroup.getContext())
@@ -36,10 +36,10 @@ public class SocnetAdapter extends RecyclerView.Adapter<SocnetAdapter.ViewHolder
     // Заменить данные в пользовательском интерфейсе
     // Вызывается менеджером
     @Override
-    public void onBindViewHolder(@NonNull SocnetAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull CardsAdapter.ViewHolder viewHolder, int i) {
         // Получить элемент из источника данных (БД, интернет...)
         // Вынести на экран используя ViewHolder
-        Soc soc = dataSource.getSoc(i);
+        Card soc = dataSource.getSoc(i);
         viewHolder.setData(soc.getDay(), soc.getTemperature());
     }
 

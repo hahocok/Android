@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SocSource {
-    private List<Soc> dataSource;   // строим этот источник данных
+public class CardSource {
+    private List<Card> dataSource;   // строим этот источник данных
     private Resources resources;    // ресурсы приложения
 
-    public SocSource(Resources resources) {
+    public CardSource(Resources resources) {
         dataSource = new ArrayList<>(6);
         this.resources = resources;
     }
 
-    public SocSource build(){
+    public CardSource build(){
         // строки описаний из ресурсов
         String[] days = resources.getStringArray(R.array.days);
         for (int i = 0; i < days.length; i++) {
-            dataSource.add(new Soc(days[i], getRandomTemp()));
+            dataSource.add(new Card(days[i], getRandomTemp()));
         }
         return this;
     }
@@ -36,7 +36,7 @@ public class SocSource {
         return String.valueOf(i);
     }
 
-    public Soc getSoc(int position) {
+    public Card getSoc(int position) {
         return dataSource.get(position);
     }
 

@@ -1,10 +1,10 @@
 package com.android.android.cards;
 
-public class Soc {
+public class Card {
     private String day;
     private String temperature;
 
-    public Soc(String day, String temperature){
+    public Card(String day, String temperature){
         this.day = day;
         this.temperature = temperature;
     }
