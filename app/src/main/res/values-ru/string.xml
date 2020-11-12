@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Погода</string>
+    <string name="city">Город</string>
+    <string name="city_hint">Выберите город</string>
+    <string name="temperature">Температура</string>
+    <string name="cloudiness">Облачность</string>
+    <string name="humidity">Влажность</string>
+    <string name="OK">OK</string>
+    <string name="enter_city">Введите название города</string>
+    <string name="settings_style">Темный/светлый стиль</string>
+    <string name="settings_language">Выберите язык</string>
+</resources>
