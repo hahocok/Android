@@ -1,9 +1,8 @@
 package com.android.android;
 
 public interface Constants {
-    String LOG_TAG = "My Log";
-
-    String CITY = "CITY";
-    String CLOUDINESS = "CLOUDINESS";
-    String HUMIDITY = "HUMIDITY";
+    final String LOG_TAG = "My Log";
+    final String CITY = "CITY";
+    final String CLOUDINESS = "CLOUDINESS";
+    final String HUMIDITY = "HUMIDITY";
 }

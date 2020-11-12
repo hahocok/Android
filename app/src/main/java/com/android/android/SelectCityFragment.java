@@ -1,7 +1,6 @@
 package com.android.android;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,43 +41,33 @@ public class SelectCityFragment extends Fragment implements Constants {
         btnSelectCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String city = etSelectCity.getText().toString();
-                boolean isCloudiness = cbCloudiness.isChecked();
-                boolean isHumidity = cbHumidity.isChecked();
-
-                presenter.setTemperature(getRandomTemp());
-
-                MainActivityFragment fragment = new MainActivityFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString(CITY, city);
-                bundle.putBoolean(CLOUDINESS, isCloudiness);
-                bundle.putBoolean(HUMIDITY, isHumidity);
-                fragment.setArguments(bundle);
-                getFragmentManager().
-                        beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .commit();
+                startMainFragment();
             }
         });
 
         readIntent();
     }
 
-    private String getRandomTemp() {
-        int min = -30;
-        int max = 30;
-        int diff = max - min;
-        Random random = new Random();
-        int i = random.nextInt(diff + 1);
-        i += min;
-        return String.valueOf(i);
+    private void startMainFragment() {
+        saveData();
+        SelectCityFragment selectCityFragment = new SelectCityFragment();
+        getFragmentManager().
+                beginTransaction()
+                .replace(R.id.fragment_container, selectCityFragment)
+                .commit();
+    }
+
+
+    private void saveData() {
+        presenter.setCity(etSelectCity.getText().toString());
+        presenter.setRandomTemperature();
+        presenter.setCloudinessVisible(cbCloudiness);
+        presenter.setHumidityVisible(cbHumidity);
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(CITY, etSelectCity.getText().toString());
-        outState.putBoolean(CLOUDINESS, cbCloudiness.isChecked());
-        outState.putBoolean(HUMIDITY, cbHumidity.isChecked());
+        saveData();
         super.onSaveInstanceState(outState);
     }
 
@@ -93,15 +80,9 @@ public class SelectCityFragment extends Fragment implements Constants {
     }
 
     private void readIntent() {
-        Bundle args = getArguments();
-        String city = null;
-        boolean isCloudiness = false;
-        boolean isHumidity = false;
-        if (args != null) {
-            city = args.getString(CITY);
-            isCloudiness = args.getBoolean(CLOUDINESS, false);
-            isHumidity = args.getBoolean(HUMIDITY, false);
-        }
+        String city = presenter.getCity();
+        boolean isCloudiness = presenter.isCloudinessVisible();
+        boolean isHumidity = presenter.isHumidityVisible();
 
         if (city != null && city.equals(getResources().getString(R.string.city))) {
             etSelectCity.setHint(getResources().getString(R.string.enter_city));

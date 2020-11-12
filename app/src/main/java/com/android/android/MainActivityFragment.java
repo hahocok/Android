@@ -40,23 +40,9 @@ public class MainActivityFragment extends Fragment implements Constants {
         mainCityContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectCityFragment selectCityFragment = new SelectCityFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(CITY, mainCity.getText().toString());
-                bundle.putBoolean(CLOUDINESS, isVisible(mainCloudinessContainer));
-                bundle.putBoolean(HUMIDITY, isVisible(mainHumidityContainer));
-
-                selectCityFragment.setArguments(bundle);
-
-                getFragmentManager().
-                        beginTransaction()
-                        .replace(R.id.fragment_container, selectCityFragment)
-                        .commit();
-
+                startSelectCityFragment();
             }
         });
-
 
         mainTemperature.setText(presenter.getTemperature());
 
@@ -64,47 +50,46 @@ public class MainActivityFragment extends Fragment implements Constants {
         return view;
     }
 
-    private boolean isVisible(View view) {
-        int isVisible = view.getVisibility();
-        if (isVisible == View.VISIBLE) {
-            return true;
-        } else {
-            return false;
-        }
+    private void startSelectCityFragment() {
+        saveData();
+        SelectCityFragment selectCityFragment = new SelectCityFragment();
+        getFragmentManager().
+                beginTransaction()
+                .replace(R.id.fragment_container, selectCityFragment)
+                .commit();
     }
 
+
+    private void saveData() {
+        presenter.setCity(mainCity.getText().toString());
+        presenter.setCloudinessVisible(mainCloudinessContainer);
+        presenter.setHumidityVisible(mainHumidityContainer);
+    }
+
+
     private void readIntent() {
-        Bundle args = getArguments();
-        String city = null;
-        boolean isCloudiness = false;
-        boolean isHumidity = false;
-        if (args != null) {
-            city = args.getString(CITY);
-            isCloudiness = args.getBoolean(CLOUDINESS, false);
-            isHumidity = args.getBoolean(HUMIDITY, false);
+        final String city = presenter.getCity();
+        final boolean isCloudiness = presenter.isCloudinessVisible();
+        final boolean isHumidity = presenter.isHumidityVisible();
 
-            if (city != null && city.equals(getResources().getString(R.string.city))) {
-                mainCity.setHint(getResources().getString(R.string.enter_city));
-            } else {
-                mainCity.setText(city);
-            }
-
-            mainTemperature.setText(presenter.getTemperature());
-
-            if (isCloudiness) {
-                mainCloudinessContainer.setVisibility(View.VISIBLE);
-            } else {
-                mainCloudinessContainer.setVisibility(View.GONE);
-            }
-
-            if (isHumidity) {
-                mainHumidityContainer.setVisibility(View.VISIBLE);
-            } else {
-                mainHumidityContainer.setVisibility(View.GONE);
-            }
+        if (city != null && city.equals(getResources().getString(R.string.city))) {
+            mainCity.setHint(getResources().getString(R.string.enter_city));
         } else {
+            mainCity.setText(city);
+        }
+
+        mainTemperature.setText(presenter.getTemperature());
+
+        if (isCloudiness) {
             mainCloudinessContainer.setVisibility(View.VISIBLE);
+        } else {
+            mainCloudinessContainer.setVisibility(View.GONE);
+        }
+
+        if (isHumidity) {
             mainHumidityContainer.setVisibility(View.VISIBLE);
+        } else {
+            mainHumidityContainer.setVisibility(View.GONE);
         }
 
 
