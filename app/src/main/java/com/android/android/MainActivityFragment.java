@@ -1,5 +1,6 @@
 package com.android.android;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -100,54 +101,60 @@ public class MainActivityFragment extends Fragment implements Constants {
     }
 
     private void getWeather() {
-        try {
-
-            String city;
-            if (getArguments() != null) {
-                city = getArguments().getString(CITY);
-            } else {
-                city = "";
-            }
-            String sb = WEATHER_URL_START +
-                    city +
-                    WEATHER_URL_END;
-            final URL uri = new URL(sb + WEATHER_API_KEY);
-            final Handler handler = new Handler(); // Запоминаем основной поток
-            new Thread(new Runnable() {
-                public void run() {
-                    HttpsURLConnection urlConnection = null;
-                    try {
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
-                        urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
-                        String result = getLines(in);
-                        // преобразование данных запроса в модель
-                        Gson gson = new Gson();
-                        final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
-                        // Возвращаемся к основному потоку
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayWeather(weatherRequest);
-                            }
-                        });
-                    } catch (FileNotFoundException e) {
-                        Snackbar.make(getView(), "Такого города нет", Snackbar.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Fail connection", e);
-                        e.printStackTrace();
-                    } finally {
-                        if (null != urlConnection) {
-                            urlConnection.disconnect();
+        final URL uri = getUrl();
+        final Handler handler = new Handler(); // Запоминаем основной поток
+        new Thread(new Runnable() {
+            public void run() {
+                HttpsURLConnection urlConnection = null;
+                try {
+                    urlConnection = (HttpsURLConnection) uri.openConnection();
+                    urlConnection.setRequestMethod("GET"); // установка метода получения данных -GET
+                    urlConnection.setReadTimeout(10000); // установка таймаута - 10 000 миллисекунд
+                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); // читаем  данные в поток
+                    String result = getLines(in);
+                    // преобразование данных запроса в модель
+                    Gson gson = new Gson();
+                    final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
+                    // Возвращаемся к основному потоку
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayWeather(weatherRequest);
                         }
+                    });
+                } catch (FileNotFoundException e) {
+                    Snackbar.make(getView(), getResources().getString(R.string.error_city_not_found), Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e(TAG, getResources().getString(R.string.error_fail_connection), e);
+                    e.printStackTrace();
+                } finally {
+                    if (null != urlConnection) {
+                        urlConnection.disconnect();
                     }
                 }
-            }).start();
+            }
+        }).start();
+    }
+
+    private URL getUrl() {
+        String city;
+        if (getArguments() != null) {
+            city = getArguments().getString(CITY);
+        } else {
+            city = "";
+        }
+        String sb = WEATHER_URL_START +
+                city +
+                WEATHER_URL_END;
+
+        URL uri = null;
+        try {
+            uri = new URL(sb + WEATHER_API_KEY);
         } catch (MalformedURLException e) {
-            Log.e(TAG, "Fail URI", e);
             e.printStackTrace();
         }
+
+        return uri;
     }
 
     private String getLines(BufferedReader in) {

@@ -13,4 +13,7 @@
     <string name="settings">Настройки</string>
     <string name="settings_style">Темный/светлый стиль</string>
     <string name="settings_language">Выберите язык</string>
+
+    <string name="error_fail_connection">Ошибка подключения</string>
+    <string name="error_city_not_found">Такого города нет</string>
 </resources>
