@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Погода</string>
     <string name="City">Город</string>
+    <string name="city_hint">Выберите город</string>
     <string name="Temperature">Температура</string>
     <string name="Cloudiness">Облачность</string>
     <string name="Humidity">Влажность</string>

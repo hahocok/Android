@@ -9,7 +9,6 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/main_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/City"
@@ -20,12 +19,28 @@
         />
 
     <TextView
-        android:id="@+id/main_temperature"
+        android:id="@+id/main_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/city_hint"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Temperature"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="80dp"
+        />
+
+    <TextView
+        android:id="@+id/main_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         />
 
     <TextView

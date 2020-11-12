@@ -1,6 +1,5 @@
 package com.android.android;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
         setContentView(R.layout.activity_main);
 
         presenter = MainPresenter.getInstance();
+
         mainTemperature = findViewById(R.id.main_temperature);
         mainCity = findViewById(R.id.main_city);
         mainCloudiness = findViewById(R.id.main_cloudiness);
@@ -34,10 +34,7 @@ public class MainActivity extends AppCompatActivity implements Constants {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ActivitySelectCity.class);
-                intent.putExtra(CITY, mainCity.getText().toString());
-                intent.putExtra(CLOUDINESS, isVisible(mainCloudiness));
-                intent.putExtra(HUMIDITY, isVisible(mainHumidity));
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             }
         });
 
@@ -52,47 +49,6 @@ public class MainActivity extends AppCompatActivity implements Constants {
         Log.d(LOG_TAG, instanceState + " - onCreate()");
     }
 
-    private boolean isVisible(View view) {
-        int isVisible = view.getVisibility();
-        if (isVisible == View.VISIBLE) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if (requestCode != REQUEST_CODE) {
-            super.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-
-        if (resultCode == RESULT_OK && data != null){
-            String city = data.getStringExtra(CITY);
-            boolean isCloudiness = data.getBooleanExtra(CLOUDINESS, false);
-            boolean isHumidity = data.getBooleanExtra(HUMIDITY, false);
-
-            if (city != null) {
-                mainCity.setText(city);
-            }
-
-            if (isCloudiness) {
-                mainCloudiness.setVisibility(View.VISIBLE);
-            } else {
-                mainCloudiness.setVisibility(View.GONE);
-            }
-
-            if (isHumidity) {
-                mainHumidity.setVisibility(View.VISIBLE);
-            } else {
-                mainHumidity.setVisibility(View.GONE);
-            }
-        }
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -104,7 +60,27 @@ public class MainActivity extends AppCompatActivity implements Constants {
     protected void onRestoreInstanceState(Bundle saveInstanceState){
         super.onRestoreInstanceState(saveInstanceState);
 
+        final String city = presenter.getCity();
+        boolean isCloudiness = presenter.isCloudinessVisible();
+        boolean isHumidity = presenter.isHumidityVisible();
+
         mainTemperature.setText(presenter.getTemperature());
+
+        if (city != null) {
+            mainCity.setText(city);
+        }
+
+        if (isCloudiness) {
+            mainCloudiness.setVisibility(View.VISIBLE);
+        } else {
+            mainCloudiness.setVisibility(View.GONE);
+        }
+
+        if (isHumidity) {
+            mainHumidity.setVisibility(View.VISIBLE);
+        } else {
+            mainHumidity.setVisibility(View.GONE);
+        }
 
         Toast.makeText(getApplicationContext(), "Повторный запуск!! - onRestoreInstanceState()", Toast.LENGTH_SHORT).show();
         Log.d(LOG_TAG, "Повторный запуск!! - onRestoreInstanceState()");
@@ -113,6 +89,28 @@ public class MainActivity extends AppCompatActivity implements Constants {
     @Override
     protected void onResume() {
         super.onResume();
+
+        final String city = presenter.getCity();
+        boolean isCloudiness = presenter.isCloudinessVisible();
+        boolean isHumidity = presenter.isHumidityVisible();
+
+        mainTemperature.setText(presenter.getTemperature());
+
+        if (city != null) {
+            mainCity.setText(city);
+        }
+
+        if (isCloudiness) {
+            mainCloudiness.setVisibility(View.VISIBLE);
+        } else {
+            mainCloudiness.setVisibility(View.GONE);
+        }
+
+        if (isHumidity) {
+            mainHumidity.setVisibility(View.VISIBLE);
+        } else {
+            mainHumidity.setVisibility(View.GONE);
+        }
         Toast.makeText(getApplicationContext(), "onResume()", Toast.LENGTH_SHORT).show();
         Log.d(LOG_TAG, "onResume()");
     }

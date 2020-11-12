@@ -1,6 +1,5 @@
 package com.android.android;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +16,14 @@ public class ActivitySelectCity extends AppCompatActivity implements Constants {
     private CheckBox cbCloudiness;
     private CheckBox cbHumidity;
 
+    private MainPresenter presenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_city);
+
+        presenter = MainPresenter.getInstance();
 
         btnSelectCity = findViewById(R.id.btn_select_city);
         cbCloudiness = findViewById(R.id.cb_cloudiness);
@@ -32,21 +35,18 @@ public class ActivitySelectCity extends AppCompatActivity implements Constants {
         btnSelectCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra(CITY, etSelectCity.getText().toString());
-                intent.putExtra(CLOUDINESS, cbCloudiness.isChecked());
-                intent.putExtra(HUMIDITY, cbHumidity.isChecked());
-                setResult(RESULT_OK, intent);
+                presenter.setCity(etSelectCity.getText().toString());
+                presenter.setCloudinessVisible(cbCloudiness.isChecked());
+                presenter.setHumidityVisible(cbHumidity.isChecked());
                 finish();
             }
         });
     }
 
     private void readIntent() {
-        Intent intent = getIntent();
-        String city = intent.getStringExtra(CITY);
-        boolean isCloudiness = intent.getBooleanExtra(CLOUDINESS, false);
-        boolean isHumidity = intent.getBooleanExtra(HUMIDITY, false);
+        String city = presenter.getCity();
+        boolean isCloudiness = presenter.isCloudinessVisible();
+        boolean isHumidity = presenter.isHumidityVisible();
 
         if (city != null && city.equals(getResources().getString(R.string.City))) {
             etSelectCity.setHint(getResources().getString(R.string.enter_city));
