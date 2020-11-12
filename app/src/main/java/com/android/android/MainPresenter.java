@@ -8,20 +8,20 @@ public final class MainPresenter {
     private int temperature;
 
     // Конструктор (вызывать извне его нельзя, поэтому он приватный)
-    private MainPresenter(){
+    private MainPresenter() {
         temperature = 0;
     }
 
     // Увеличение счетчика
-    public void setTemperature(int value){
-        temperature = value;
+    public void setTemperature(String value) {
+        temperature = Integer.parseInt(value);
     }
 
-    public int getTemperature(){
+    public int getTemperature() {
         return temperature;
     }
 
-    public static MainPresenter getInstance(){
+    public static MainPresenter getInstance() {
         synchronized (syncObj) {
             if (instance == null) {
                 instance = new MainPresenter();

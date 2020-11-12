@@ -5,4 +5,8 @@
     <string name="temperature">Температура</string>
     <string name="cloudiness">Облачность</string>
     <string name="humidity">Влажность</string>
+    <string name="OK">OK</string>
+    <string name="enter_city">Введите название города</string>
+    <string name="settings_style">Темный/светлый стиль</string>
+    <string name="settings_language">Выберите язык</string>
 </resources>

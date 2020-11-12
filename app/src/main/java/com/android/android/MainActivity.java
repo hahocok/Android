@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
         String instanceState;
         if (savedInstanceState == null){
             instanceState = "Первый запуск!";
-        }
-        else{
+        } else{
             instanceState = "Повторный запуск!";
         }
         Toast.makeText(getApplicationContext(), instanceState + " - onCreate()", Toast.LENGTH_SHORT).show();
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle saveInstanceState){
+    protected void onRestoreInstanceState(Bundle saveInstanceState) {
         super.onRestoreInstanceState(saveInstanceState);
         mainTemperature.setText(((Integer)presenter.getTemperature()).toString());
         Toast.makeText(getApplicationContext(), "Повторный запуск!! - onRestoreInstanceState()", Toast.LENGTH_SHORT).show();
@@ -62,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle saveInstanceState){
+    protected void onSaveInstanceState(Bundle saveInstanceState) {
         super.onSaveInstanceState(saveInstanceState);
-        presenter.setTemperature(Integer.parseInt(mainTemperature.getText().toString()));
+        presenter.setTemperature(mainTemperature.getText().toString());
         Toast.makeText(getApplicationContext(), "onSaveInstanceState()", Toast.LENGTH_SHORT).show();
         Log.d(LOG_TAG, "onSaveInstanceState()");
     }
