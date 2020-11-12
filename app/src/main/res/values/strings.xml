@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Android</string>
+    <string name="app_name">Weather</string>
+    <string name="city">City</string>
+    <string name="temperature">Temperature</string>
+    <string name="cloudiness">Cloudiness</string>
+    <string name="humidity">Humidity</string>
 </resources>
