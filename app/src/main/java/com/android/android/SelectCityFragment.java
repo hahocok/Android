@@ -64,11 +64,7 @@ public class SelectCityFragment extends Fragment implements Constants {
                 Snackbar.make(v, "Применить изменения?", Snackbar.LENGTH_LONG).setAction("ОК", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        hideKeyboard(getContext(), view);
-                        getFragmentManager().
-                                beginTransaction()
-                                .replace(R.id.fragment_container, fragment)
-                                .commit();
+                        startMainFragment(fragment);
                     }
                 }).show();
 
@@ -82,9 +78,11 @@ public class SelectCityFragment extends Fragment implements Constants {
         readIntent();
     }
 
-    public static void hideKeyboard(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    private void startMainFragment(MainActivityFragment fragment) {
+        getFragmentManager().
+                beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     private String getRandomTemp() {
