@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Android</string>
+    <string name="app_name">Weather</string>
+    <string name="City">City</string>
+    <string name="city_hint">Choose city</string>
+    <string name="Temperature">Temperature</string>
+    <string name="Cloudiness">Cloudiness</string>
+    <string name="Humidity">Humidity</string>
+    <string name="OK">OK</string>
+    <string name="enter_city">Enter the name of the city</string>
+    <string name="settings_style">Dark/light style</string>
+    <string name="settings_language">Choose language</string>
 </resources>
